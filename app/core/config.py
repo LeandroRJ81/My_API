@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 dias
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
-    PROJECT_NAME: str = "TODOFast"
+    PROJECT_NAME: str = "LeandroFast"
     
     # Database
     MONGO_CONNECTION_STRING: str = config("MONGO_CONNECTION_STRING", cast=str)

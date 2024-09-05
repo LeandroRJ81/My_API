@@ -17,18 +17,16 @@ async def adiciona_usuario(data: UserAuth):
         )
 
 @user_router.delete('/exclui/{username}', summary='Exclui Usuário')
-async def exclui_usuario(username: str):
+async def exclui_usuario(username: str, password: str):
     try:
-        # Verifica se o usuário existe pelo username
-        user = await UserService.get_user_by_username(username)
+        # Verifica se o usuário existe e a senha está correta
+        user = await UserService.delete_user(username=username, password=password)
         if not user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Usuário não encontrado'
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail='Usuário não encontrado ou senha incorreta'
             )
         
-        # Exclui o usuário
-        await UserService.delete_user(user)
         return {"detail": "Usuário excluído com sucesso"}
     
     except pymongo.errors.PyMongoError as e:

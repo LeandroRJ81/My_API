@@ -43,10 +43,19 @@ class UserService:
         return user
     
     @staticmethod
-    async def delete_user(user: UserAuth):
-        existing_user = await UserService.get_user_by_username(user.username)
-        if existing_user:
-            await existing_user.delete()
+    async def delete_user(username: str, password: str):
+        # Verifica se o usuário existe pelo nome de usuário
+        existing_user = await UserService.get_user_by_username(username)
+        if not existing_user:
+            return None
+        
+        # Verifica se a senha está correta
+        if not verify_password(password, existing_user.hash_password):
+            return None
+        
+        # Exclui o usuário
+        await existing_user.delete()
         return existing_user
+
 
 
