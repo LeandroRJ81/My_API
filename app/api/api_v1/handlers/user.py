@@ -16,7 +16,7 @@ async def adiciona_usuario(data: UserAuth):
             detail='Username ou e-mail deste usuário já existe'
         )
 
-@user_router.delete('/exclui/{username}', summary='Exclui Usuário')
+@user_router.delete('/exclui', summary='Exclui Usuário')
 async def exclui_usuario(username: str, password: str):
     try:
         # Verifica se o usuário existe e a senha está correta
