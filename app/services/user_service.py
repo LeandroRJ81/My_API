@@ -8,11 +8,10 @@ class UserService:
     @staticmethod
     async def create_user(user: UserAuth):
         usuario = User(
-            username = user.username,
-            email = user.email,
-            hash_password = get_password(user.password)
+            username=user.username,
+            email=user.email,
+            hash_password=get_password(user.password)
         )
-
         await usuario.save()
         return usuario
     
@@ -27,6 +26,11 @@ class UserService:
         return user
 
     @staticmethod
+    async def get_user_by_username(username: str) -> Optional[User]:
+        user = await User.find_one(User.username == username)
+        return user
+
+    @staticmethod
     async def authenticate(email: str, password: str) -> Optional[User]:
         user = await UserService.get_user_by_email(email=email)
         if not user:
@@ -36,5 +40,13 @@ class UserService:
             hashed_password=user.hash_password
         ):
             return None
-        
         return user
+    
+    @staticmethod
+    async def delete_user(user: UserAuth):
+        existing_user = await UserService.get_user_by_username(user.username)
+        if existing_user:
+            await existing_user.delete()
+        return existing_user
+
+
